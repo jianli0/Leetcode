@@ -1,4 +1,6 @@
 # Definition for a binary tree node.
+# postorder is the reverse order of preorder except that
+# in this preorder we need to visit the right node first
 class TreeNode:
     def __init__(self, x):
         self.val = x
@@ -8,22 +10,17 @@ class TreeNode:
 class Solution:
     # @param {TreeNode} root
     # @return {integer[]}
-    def inorderTraversal(self, root):
-        if root == None:
-            return []
-
+    def postorderTraversal(self, root):
         path = []
         stack = []
-        while stack or root is not None:
-            if root is not None:
-                stack.append(root)
-                root = root.left
-            else:
-                root = stack.pop()
-                path.append(root.val)
-                root = root.right
-        return path
-
+        stack.append(root)
+        while stack:
+            present = stack.pop()
+            if not present == None:
+                path.append(present.val)
+                stack.append(present.left)
+                stack.append(present.right)
+        return path[::-1]
 
 
 # Test
@@ -44,4 +41,5 @@ c.left = d
 d.left = e
 d.right = f
 
-print Solution().inorderTraversal(a)
+print Solution().postorderTraversal(a)
+
